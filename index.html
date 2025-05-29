@@ -20,18 +20,36 @@
     }
 
     .texto {
-      position: absolute;
-      top: 45%;
-      left: 5%;
-      font-size: 1.3rem;
-      max-width: 300px;
-      color: #4b5563;
-      z-index: 10;
-      white-space: pre-wrap;
-      opacity: 0;
-      transition: opacity 2s ease;
-      line-height: 1.4;
-    }
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.4rem;
+  max-width: 90%;
+  color: #374151;
+  z-index: 10;
+  white-space: pre-wrap;
+  opacity: 0;
+  transition: opacity 2s ease;
+  line-height: 1.5;
+  text-align: center;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 10px;
+}
+
+@media (max-width: 600px) {
+  .texto {
+    top: 60%;
+    font-size: 1rem;
+    padding: 10px 15px;
+  }
+  .contador {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
+}
+
 
     .aparecer {
       opacity: 1;

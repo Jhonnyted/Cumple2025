@@ -21,16 +21,17 @@
 
     .texto {
       position: absolute;
-      top: 45%;
+      top: 20%;
       left: 5%;
+      max-width: 280px;
       font-size: 1.3rem;
-      max-width: 300px;
       color: #4b5563;
       z-index: 10;
       white-space: pre-wrap;
-      opacity: 0;
-      transition: opacity 2s ease;
       line-height: 1.4;
+      text-align: left;
+      opacity: 0;
+      transition: opacity 1s ease;
     }
 
     .aparecer {
@@ -57,17 +58,16 @@
       height: 100vh;
     }
 
-    /* Estilos adaptativos para móviles */
     @media (max-width: 600px) {
       .texto {
         top: auto;
-        bottom: 100px;
-        left: 10px; /* Más pegado a la izquierda que el 50% */
-        transform: none; /* Sin centrar */
+        bottom: 120px;
+        left: 5%;
+        right: auto;
         max-width: 90%;
         font-size: 1rem;
-        text-align: left; /* Que el texto quede alineado a la izquierda */
-        padding: 0 10px;
+        text-align: left;
+        padding: 0;
       }
 
       .contador {
@@ -93,9 +93,20 @@
 
     ajustarCanvas();
 
-    let centroX = canvas.width / 2;
+    window.addEventListener("resize", () => {
+      ajustarCanvas();
+      centroX = canvas.width / 2;
+      semillaY = -50;
+      semillaCayendo = true;
+      ramasCrecidas = [];
+      hojas.length = 0;
+      hojasFijas.length = 0;
+      desplazamientoX = 0;
+    });
+
+    let centroX = canvas.width > 600 ? canvas.width / 2 : canvas.width * 0.6;
     const altura = canvas.height;
-    const semillaBase = altura - 40;
+    const semillaBase = altura - 60;
     let semillaY = -50;
     let semillaCayendo = true;
     let moverArbol = false;
@@ -105,11 +116,6 @@
     const hojasFijas = [];
     const colores = ["#f43f5e", "#f97316", "#facc15", "#84cc16", "#22d3ee"];
     const MAX_HOJAS = window.innerWidth < 600 ? 60 : 100;
-
-    // Base longitud según pantalla
-    const baseLongitud = window.innerWidth < 600 ? 80 : 140;
-    // Desplazamiento máximo para mover el árbol sin tapar el contador
-    const maxDesplazamientoX = window.innerWidth < 600 ? 60 : 100;
 
     function dibujarTrapezoide(x1, y1, x2, y2, anchoBase, anchoPunta, color, borde = false) {
       const dx = x2 - x1;
@@ -186,8 +192,8 @@
 
         if (this.progress >= 1 && this.profundidad >= 3 && !this.hojaColocada) {
           hojasFijas.push({
-            x: finX + (Math.random() - 0.5) * 10,
-            y: finY + (Math.random() - 0.5) * 10,
+            x: finX,
+            y: finY,
             radio: 7 + Math.random() * 4,
             color: colores[Math.floor(Math.random() * colores.length)]
           });
@@ -225,11 +231,11 @@
           ctx.fill();
         } else {
           semillaCayendo = false;
-          ramasCrecidas.push(new Rama(centroX, semillaBase, baseLongitud, Math.PI / 2, 0, 30));
+          ramasCrecidas.push(new Rama(centroX, semillaBase, 140, Math.PI / 2, 0, 30));
           moverArbol = true;
         }
       } else {
-        if (moverArbol && desplazamientoX < maxDesplazamientoX) {
+        if (moverArbol && desplazamientoX < 100) {
           desplazamientoX += 0.3;
         }
 
@@ -254,8 +260,8 @@
         }
 
         hojas.forEach((hoja, i) => {
-          hoja.x += hoja.vx + Math.sin((frame + i) / (30 + i * 5)) * 0.4;
-          hoja.y += hoja.vy + Math.cos((frame + i) / (40 + i * 3)) * 0.3;
+          hoja.x += hoja.vx + Math.sin((frame + i) / 60) * 0.2;
+          hoja.y += hoja.vy + Math.cos((frame + i) / 80) * 0.2;
           hoja.angle += 0.01;
 
           if (hoja.x + desplazamientoX < 350 && hoja.y > canvas.height * 0.35 && hoja.y < canvas.height * 0.75) {
@@ -280,7 +286,6 @@
     }
     animar();
 
-    // Contador
     const contador = document.getElementById("contador");
     function actualizarContador() {
       const inicio = new Date("2024-02-04T00:00:00");
@@ -295,37 +300,20 @@
     setInterval(actualizarContador, 1000);
     actualizarContador();
 
-    // Texto con escritura animada
     const mensaje = "El amor es como una semilla:\npequeña, pero llena de esperanza.\nCon cuidado, tiempo y ternura,\ncrece, florece y se convierte\nen algo hermoso e inmenso.";
     const textoDiv = document.getElementById("texto");
     let i = 0;
-
-    // Delay más lento en móvil para mejor lectura
-    const delay = window.innerWidth < 600 ? 120 : 90;
-
     function escribirTexto() {
       if (i < mensaje.length) {
         textoDiv.textContent += mensaje.charAt(i);
         i++;
-        setTimeout(escribirTexto, delay);
-      } else {
-        textoDiv.classList.add("aparecer");
+        setTimeout(escribirTexto, 90);
       }
     }
-    escribirTexto();
-
-    window.addEventListener("resize", () => {
-      ajustarCanvas();
-      centroX = canvas.width / 2;
-      // Reiniciamos animación y variables
-      ramasCrecidas = [];
-      hojas.length = 0;
-      hojasFijas.length = 0;
-      semillaCayendo = true;
-      semillaY = -50;
-      moverArbol = false;
-      desplazamientoX = 0;
-    });
+    setTimeout(() => {
+      textoDiv.classList.add("aparecer");
+      escribirTexto();
+    }, 1000);
   </script>
 </body>
 </html>

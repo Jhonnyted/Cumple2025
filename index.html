@@ -69,6 +69,17 @@
         text-align: left;
         padding: 0;
       }
+.texto::after {
+  content: "|";
+  animation: blink 1s infinite;
+  margin-left: 4px;
+  color: #4b5563;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
 
       .contador {
         font-size: 0.9rem;
@@ -82,6 +93,7 @@
   <div class="texto" id="texto"></div>
   <div class="contador" id="contador"></div>
   <canvas id="arbolCanvas"></canvas>
+  
 
   <script>
     const canvas = document.getElementById("arbolCanvas");
@@ -300,21 +312,25 @@
     }
     setInterval(actualizarContador, 1000);
     actualizarContador();
+ 
+    const mensaje = "Estamos donde estamos por todo lo que\nnos hemos cuidado, compartido y \nsuperado juntos 🐻🐥."; 
+const textoDiv = document.getElementById("texto");
+let i = 0;
 
-    const mensaje = "Estamos donde estamos por todo lo que\nhemos cuidado, compartido y superado juntos.";
-    const textoDiv = document.getElementById("texto");
-    let i = 0;
-    function escribirTexto() {
-      if (i < mensaje.length) {
-        textoDiv.textContent += mensaje.charAt(i);
-        i++;
-        setTimeout(escribirTexto, 90);
-      }
-    }
-    setTimeout(() => {
-      textoDiv.classList.add("aparecer");
-      escribirTexto();
-    }, 1000);
+function escribirTexto() {
+  if (i < mensaje.length) {
+    textoDiv.innerHTML += mensaje.charAt(i);
+    i++;
+    setTimeout(escribirTexto, 130); // velocidad de escritura
+  } else {
+    textoDiv.classList.add("aparecer");
+  }
+}
+
+setTimeout(() => {
+  textoDiv.classList.add("aparecer");
+  escribirTexto();
+}, 1000);
   </script>
 </body>
 </html>

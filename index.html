@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+
+
   <title>Árbol con animación</title>
   <style>
     * {
@@ -46,6 +50,7 @@
       font-size: 1.2rem;
       color: #1f2937;
       z-index: 10;
+      font-family: "Press Start 2P", system-ui;
     }
 
     canvas {
@@ -68,6 +73,8 @@
         font-size: 1rem;
         text-align: left;
         padding: 0;
+        font-family: 'Chewy', cursive;
+        color: #ff0004;
       }
 .texto::after {
   content: "|";
@@ -308,13 +315,13 @@
       const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
       const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
       const segundos = Math.floor((diferencia / 1000) % 60);
-      contador.textContent = `Llevamos ${dias} días, ${horas} horas, ${minutos} minutos, ${segundos} segundos.`;
+      contador.textContent = `Llevamos juntos ${dias} días, ${horas} horas, ${minutos} minutos, ${segundos} segundos.`;
     }
     setInterval(actualizarContador, 1000);
     actualizarContador();
  
-    const mensaje = "Estamos donde estamos por todo lo que\nnos hemos cuidado, compartido y \nsuperado juntos 🐻🐥."; 
-const textoDiv = document.getElementById("texto");
+    const mensaje = "Estamos donde estamos por todo lo que\nnos hemos cuidado, compartido y \nsuperado juntos 🐻🐥.";
+    const textoDiv = document.getElementById("texto");
 let i = 0;
 
 function escribirTexto() {

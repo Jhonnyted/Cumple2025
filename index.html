@@ -328,7 +328,7 @@ function escribirTexto() {
   if (i < mensaje.length) {
     textoDiv.innerHTML += mensaje.charAt(i);
     i++;
-    setTimeout(escribirTexto, 90); // velocidad de escritura
+    setTimeout(escribirTexto, 80); // velocidad de escritura
   } else {
     textoDiv.classList.add("aparecer");
   }

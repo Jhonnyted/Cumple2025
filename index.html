@@ -1,17 +1,14 @@
 <!DOCTYPE html>
+<meta name="robots" content="noindex">
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-
-
   <title>Árbol con animación</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     html, body {
       margin: 0;
@@ -20,22 +17,99 @@
       width: 100%;
       height: 100%;
       font-family: sans-serif;
-      background: linear-gradient(#dbeafe, #f0fdf4);
     }
+
+    .nubes {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: 100%;
+      height: 150px;
+       /* background: url('https://pngimg.com/uploads/cloud/cloud_PNG112218.png') repeat-x;
+      background-size: contain;
+      animation: moverNubes 90s linear infinite; */
+      z-index: 0;
+      opacity: 1;
+      filter: brightness(1);
+      transition: filter 1s ease;
+    }
+
+   /* @keyframes moverNubes {
+      from { background-position-x: 0; }
+      to { background-position-x: 1000px; }
+    } */
+
+    .sol, .luna {
+      position: absolute;
+      top: 80px;
+      right: 60px;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      z-index: 0;
+      opacity: 0;
+      transition: opacity 1s ease;
+    }
+
+    .sol {
+      background: radial-gradient(circle, #ffe259, #ffa751);
+      box-shadow: 0 0 30px 10px rgba(255, 204, 0, 0.4);
+    }
+
+    .luna {
+      background: radial-gradient(circle, #f4f4f4, #bbb);
+      box-shadow: 0 0 20px 6px rgba(255, 255, 255, 0.2);
+    }
+
+    
+    #cielo-estrellado {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 40%; /* Ajusta según la altura del cielo */
+  z-index: 0;
+  pointer-events: none;
+}
+    
+    
+    /*.estrellas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 20%;
+      background-image:
+    radial-gradient(white 1.5px, transparent 1.5px),
+    radial-gradient(white 2px, transparent 2px),
+    radial-gradient(white 1px, transparent 1px);
+  background-size: 30px 30px, 50px 50px, 80px 80px;
+      opacity: 0;
+      z-index: 0;
+      animation: parpadeoEstrellas 2s infinite ease-in-out alternate;
+      transition: opacity 1s ease;
+      pointer-events: none;
+    }
+
+    @keyframes parpadeoEstrellas {
+      from { opacity: 0.3; }
+      to { opacity: 0.6; }
+    } */
 
     .texto {
       position: absolute;
-      top: 20%;
+      top: 30%;
       left: 5%;
-      max-width: 280px;
-      font-size: 1.3rem;
-      color: #4b5563;
+      max-width: 400px;
+      font-size: 1.8rem;
+      color: #ff0004;
       z-index: 10;
       white-space: pre-wrap;
       line-height: 1.4;
       text-align: left;
       opacity: 0;
       transition: opacity 1s ease;
+      font-family: 'Chewy', cursive;
     }
 
     .aparecer {
@@ -48,7 +122,7 @@
       width: 100%;
       text-align: center;
       font-size: 1.2rem;
-      color: #1f2937;
+      color: #2567fe;
       z-index: 10;
       font-family: "Press Start 2P", system-ui;
     }
@@ -68,25 +142,23 @@
         top: auto;
         bottom: 120px;
         left: 5%;
-        right: auto;
         max-width: 90%;
         font-size: 1rem;
-        text-align: left;
-        padding: 0;
         font-family: 'Chewy', cursive;
         color: #ff0004;
       }
-.texto::after {
-  content: "|";
-  animation: blink 1s infinite;
-  margin-left: 4px;
-  color: #4b5563;
-}
 
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
+      .texto::after {
+        content: "|";
+        animation: blink 1s infinite;
+        margin-left: 4px;
+        color: #4b5563;
+      }
+
+      @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0; }
+      }
 
       .contador {
         font-size: 0.9rem;
@@ -97,20 +169,198 @@
   </style>
 </head>
 <body>
+  
+  <canvas id="cielo-estrellado"></canvas>
+  <script src="script.js"></script>
+  
+  
+  
+  <div class="nubes" id="nubes">
+  <img src="https://pngimg.com/uploads/cloud/cloud_PNG112218.png" style="position: absolute; left: 10%; top: 20px; width: 170px; opacity: 0.8; pointer-events:none;">
+  <img src="https://pngimg.com/uploads/cloud/cloud_PNG112218.png" style="position: absolute; left: 40%; top: 50px; width: 80px; opacity: 0.7; pointer-events:none;">
+  <img src="https://pngimg.com/uploads/cloud/cloud_PNG112218.png" style="position: absolute; left: 70%; top: 10px; width: 100px; opacity: 0.9; pointer-events:none;">
+  <img src="https://pngimg.com/uploads/cloud/cloud_PNG112218.png" style="position: absolute; left: 85%; top: 40px; width: 60px; opacity: 0.6; pointer-events:none;">
+  <img src="https://pngimg.com/uploads/cloud/cloud_PNG112218.png" style="position: absolute; left: 75%; top: 80px; width: 170px; opacity: 0.8; pointer-events:none;">
+  <img src="https://pngimg.com/uploads/cloud/cloud_PNG112218.png" style="position: absolute; left: 90%; top: 5px; width: 80px; opacity: 0.7; pointer-events:none;">
+  <img src="https://pngimg.com/uploads/cloud/cloud_PNG112218.png" style="position: absolute; left: 5%; top: 60px; width: 100px; opacity: 0.9; pointer-events:none;">
+</div>
+
+  <div class="estrellas" id="estrellas"></div>
+  <div class="sol"></div>
+  <div class="luna"></div>
   <div class="texto" id="texto"></div>
   <div class="contador" id="contador"></div>
   <canvas id="arbolCanvas"></canvas>
-  
 
   <script>
+    // animacion de estrellas 
+    const canvasEstrellas = document.getElementById('cielo-estrellado');
+const ctxEstrellas = canvasEstrellas.getContext('2d');
+
+let estrellas = [];
+let animacionId = null;
+
+function crearEstrellasAnimadas(cantidad) {
+  canvasEstrellas.width = window.innerWidth;
+  canvasEstrellas.height = window.innerHeight * 0.4;
+
+  estrellas = [];
+  for (let i = 0; i < cantidad; i++) {
+    estrellas.push({
+      x: Math.random() * canvasEstrellas.width,
+      y: Math.random() * canvasEstrellas.height,
+      radio: Math.random() * 1.5 + 0.5,
+      alpha: Math.random(),
+      delta: (Math.random() * 0.01 + 0.005) * (Math.random() < 0.5 ? 1 : -1)
+    });
+  }
+}
+
+function animarEstrellas() {
+  ctxEstrellas.clearRect(0, 0, canvasEstrellas.width, canvasEstrellas.height);
+
+  for (let estrella of estrellas) {
+    estrella.alpha += estrella.delta;
+    if (estrella.alpha <= 0 || estrella.alpha >= 1) {
+      estrella.delta *= -1;
+      estrella.alpha = Math.max(0, Math.min(1, estrella.alpha));
+    }
+
+    ctxEstrellas.beginPath();
+    ctxEstrellas.arc(estrella.x, estrella.y, estrella.radio, 0, Math.PI * 2);
+    ctxEstrellas.fillStyle = `rgba(255, 255, 255, ${estrella.alpha})`;
+    ctxEstrellas.fill();
+  }
+
+  animacionId = requestAnimationFrame(animarEstrellas);
+}
+
+function iniciarAnimacionSegunHora() {
+  const ahora = new Date();
+  const hora = ahora.getHours();
+  const esDeNoche = (hora >= 19 || hora < 6);
+
+  if (esDeNoche) {
+    if (!animacionId) { // Evita animar varias veces
+      crearEstrellasAnimadas(150);
+      animarEstrellas();
+    }
+  } else {
+    if (animacionId) {
+      cancelAnimationFrame(animacionId);
+      animacionId = null;
+    }
+    ctxEstrellas.clearRect(0, 0, canvasEstrellas.width, canvasEstrellas.height);
+  }
+}
+
+// Ejecuta la primera vez
+iniciarAnimacionSegunHora();
+
+// Opcional: Revisar cada minuto si cambió el horario
+setInterval(iniciarAnimacionSegunHora, 60000);
+
+window.addEventListener('resize', () => {
+  if (animacionId) {
+    cancelAnimationFrame(animacionId);
+    animacionId = null;
+  }
+  iniciarAnimacionSegunHora();
+});
+    
+    
+    // Cambios visuales por hora
+    function cambiarFondoPorHora() {
+      const hora = new Date().getHours();
+      const body = document.body;
+      const nubes = document.getElementById("nubes");
+      if (hora >= 6 && hora < 12) {
+        body.style.background = "linear-gradient(#f0f9ff, #e0f7fa)";
+        nubes.style.filter = "brightness(1)";
+      } else if (hora >= 12 && hora < 18) {
+        body.style.background = "linear-gradient(#fef9c3, #fde68a)";
+        nubes.style.filter = "brightness(1)";
+      } else if (hora >= 18 && hora < 20) {
+        body.style.background = "linear-gradient(#400086, #f28b01)";
+        nubes.style.filter = "brightness(0.8)";
+      } else {
+        body.style.background = "linear-gradient(#0f172a, #1e293b)";
+        nubes.style.filter = "brightness(0.4)";        
+      }
+    }
+
+    function mostrarElementosCielo() {
+      const hora = new Date().getHours();
+      const sol = document.querySelector(".sol");
+      const luna = document.querySelector(".luna");
+      //const estrellas = document.getElementById("estrellas");
+
+      sol.style.opacity = (hora >= 6 && hora < 18) ? "1" : "0";
+      luna.style.opacity = (hora >= 18 || hora < 6) ? "1" : "0";
+      //estrellas.style.opacity = (hora >= 18 || hora < 6) ? "1" : "0";
+    }
+
+    cambiarFondoPorHora();
+    mostrarElementosCielo();
+
+    // CONTADOR
+    const contador = document.getElementById("contador");
+    function actualizarContador() {
+      const inicio = new Date("2024-02-04T00:00:00");
+      const ahora = new Date();
+      const diferencia = ahora - inicio;
+      const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
+      const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
+      const segundos = Math.floor((diferencia / 1000) % 60);
+      contador.textContent = `Llevamos juntos ${dias} días, ${horas} horas, ${minutos} minutos, ${segundos} segundos.`;
+    }
+    setInterval(actualizarContador, 1000);
+    actualizarContador();
+
+    // TEXTO
+    const mensaje = "EL amor crece y se fortalece con LEALTAD, \nestamos donde estamos por todo lo que\nnos hemos cuidado, compartido y \nsuperado juntos 🐻🐥.";
+    const textoDiv = document.getElementById("texto");
+    let i = 0;
+    function escribirTexto() {
+      if (i < mensaje.length) {
+        textoDiv.innerHTML += mensaje.charAt(i);
+        i++;
+        setTimeout(escribirTexto, 80);
+      } else {
+        textoDiv.classList.add("aparecer");
+      }
+    }
+    setTimeout(() => {
+      textoDiv.classList.add("aparecer");
+      escribirTexto();
+    }, 1000);
+    
+    
+
+      
+    
+    // ANIMACIÓN DEL ÁRBOL
     const canvas = document.getElementById("arbolCanvas");
     const ctx = canvas.getContext("2d");
+    let centroX = window.innerWidth > 600 ? window.innerWidth / 2 : window.innerWidth * 0.6;
+    const altura = window.innerHeight;
+    const semillaBase = altura - 130;
+    let semillaY = -50;
+    let semillaCayendo = true;
+    let moverArbol = false;
+    let desplazamientoX = 0;
+    const hojas = [];
+    const hojasFijas = [];
+    const colores = ["#f43f5e", "#f97316", "#facc15", "#84cc16", "#22d3ee"];
+    const MAX_HOJAS = window.innerWidth < 600 ? 60 : 100;
+    let ramasCrecidas = [];
+    let frame = 0;
 
     function ajustarCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     }
-
     ajustarCanvas();
 
     window.addEventListener("resize", () => {
@@ -124,28 +374,11 @@
       desplazamientoX = 0;
     });
 
-    let centroX = canvas.width > 600 ? canvas.width / 2 : canvas.width * 0.6;
-    const altura = canvas.height;
-    const semillaBase = altura - 130;
-    let semillaY = -50;
-    let semillaCayendo = true;
-    let moverArbol = false;
-    let desplazamientoX = 0;
-
-    const hojas = [];
-    const hojasFijas = [];
-    const colores = ["#f43f5e", "#f97316", "#facc15", "#84cc16", "#22d3ee"];
-    const MAX_HOJAS = window.innerWidth < 600 ? 60 : 100;
-
-    function dibujarTrapezoide(x1, y1, x2, y2, anchoBase, anchoPunta, color, borde = false) {
-      const dx = x2 - x1;
-      const dy = y2 - y1;
+    function dibujarTrapezoide(x1, y1, x2, y2, anchoBase, anchoPunta, color) {
+      const dx = x2 - x1, dy = y2 - y1;
       const dist = Math.sqrt(dx * dx + dy * dy);
-      const ux = dx / dist;
-      const uy = dy / dist;
-      const px = -uy;
-      const py = ux;
-
+      const ux = dx / dist, uy = dy / dist;
+      const px = -uy, py = ux;
       ctx.fillStyle = color;
       ctx.beginPath();
       ctx.moveTo(x1 + px * anchoBase, y1 + py * anchoBase);
@@ -154,12 +387,6 @@
       ctx.lineTo(x1 - px * anchoBase, y1 - py * anchoBase);
       ctx.closePath();
       ctx.fill();
-
-      if (borde) {
-        ctx.strokeStyle = "#2f1f00";
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
     }
 
     function Rama(x, y, longitud, angulo, profundidad, anchoPadre = 0) {
@@ -170,46 +397,26 @@
       this.profundidad = profundidad;
       this.progress = 0;
       this.anchoPadre = anchoPadre;
-
       this.actualizar = function () {
-        if (this.progress < 1) {
-          this.progress += 0.01;
-          if (this.progress > 1) this.progress = 1;
-        }
-
+        if (this.progress < 1) this.progress += 0.01;
         const easedProgress = 1 - Math.pow(1 - this.progress, 3);
         const finX = this.x + Math.cos(this.angulo) * this.longitud * easedProgress;
         const finY = this.y - Math.sin(this.angulo) * this.longitud * easedProgress;
-
-        let anchoBase, anchoPunta, colorRama;
-
-        if (this.profundidad === 0) {
-          anchoBase = 30 * easedProgress;
-          anchoPunta = 8 * easedProgress;
-          colorRama = "#4b2e05";
-        } else {
-          anchoBase = Math.max(this.anchoPadre * 0.7, 1.5);
-          anchoPunta = Math.max(anchoBase * 0.6, 1);
-          const verde = 50 + this.profundidad * 15;
-          colorRama = `rgb(60,${verde},20)`;
-        }
-
-        dibujarTrapezoide(this.x + desplazamientoX, this.y, finX + desplazamientoX, finY, anchoBase, anchoPunta, colorRama, this.profundidad === 0);
-
+        let anchoBase = this.profundidad === 0 ? 30 : Math.max(this.anchoPadre * 0.8, 1.5);
+        let anchoPunta = Math.max(anchoBase * 0.4, 1);
+        let color = this.profundidad === 0 ? "#4b2e05" : `rgb(60,${50 + this.profundidad * 15},20)`;
+        dibujarTrapezoide(this.x + desplazamientoX, this.y, finX + desplazamientoX, finY, anchoBase, anchoPunta, color);
         if (this.progress >= 1 && !this.expandidas && this.profundidad < 6) {
           const angOffset = 0.35 + Math.random() * 0.3;
           const longFactor = 0.6 + Math.random() * 0.2;
-          const nuevaLongitud = this.longitud * longFactor;
-
+          const nuevaLong = this.longitud * longFactor;
           ramasCrecidas.push(
-            new Rama(finX, finY, nuevaLongitud, this.angulo - angOffset, this.profundidad + 1, anchoPunta),
-            new Rama(finX, finY, nuevaLongitud, this.angulo + angOffset, this.profundidad + 1, anchoPunta),
-            new Rama(finX, finY, nuevaLongitud * 0.8, this.angulo + (Math.random() - 0.5) * 0.5, this.profundidad + 1, anchoPunta)
+            new Rama(finX, finY, nuevaLong, this.angulo - angOffset, this.profundidad + 1, anchoPunta),
+            new Rama(finX, finY, nuevaLong, this.angulo + angOffset, this.profundidad + 1, anchoPunta),
+            new Rama(finX, finY, nuevaLong * 0.8, this.angulo + (Math.random() - 0.5) * 0.5, this.profundidad + 1, anchoPunta)
           );
-
           this.expandidas = true;
         }
-
         if (this.progress >= 1 && this.profundidad >= 3 && !this.hojaColocada) {
           hojasFijas.push({
             x: finX,
@@ -236,12 +443,8 @@
       ctx.restore();
     }
 
-    let ramasCrecidas = [];
-    let frame = 0;
-
     function animar() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-
       if (semillaCayendo) {
         if (semillaY < semillaBase) {
           semillaY += 3;
@@ -255,16 +458,12 @@
           moverArbol = true;
         }
       } else {
-        if (moverArbol && desplazamientoX < 100) {
-          desplazamientoX += 0.3;
-        }
-
-        ramasCrecidas.forEach((r) => r.actualizar());
-
+        if (moverArbol && desplazamientoX < 100) desplazamientoX += 0.3;
+        ramasCrecidas.forEach(r => r.actualizar());
         if (frame % 10 === 0 && hojas.length < MAX_HOJAS) {
-          const hojasDisponibles = hojasFijas.filter(h => !h.usada);
-          if (hojasDisponibles.length > 0) {
-            const origen = hojasDisponibles[Math.floor(Math.random() * hojasDisponibles.length)];
+          const disponibles = hojasFijas.filter(h => !h.usada);
+          if (disponibles.length > 0) {
+            const origen = disponibles[Math.floor(Math.random() * disponibles.length)];
             hojas.push({
               x: origen.x,
               y: origen.y,
@@ -278,66 +477,50 @@
             origen.usada = true;
           }
         }
-
         hojas.forEach((hoja, i) => {
           hoja.x += hoja.vx + Math.sin((frame + i) / 60) * 0.2;
           hoja.y += hoja.vy + Math.cos((frame + i) / 80) * 0.2;
           hoja.angle += 0.01;
-
-          if (hoja.x + desplazamientoX < 350 && hoja.y > canvas.height * 0.35 && hoja.y < canvas.height * 0.75) {
+          if (hoja.x + desplazamientoX < 350 && hoja.y > canvas.height * 0.35 && hoja.y < canvas.height * 0.75)
             hoja.opacity = Math.max(0.1, hoja.opacity - 0.01);
-          } else {
+          else
             hoja.opacity = Math.min(1, hoja.opacity + 0.005);
-          }
-
-          if (hoja.y > canvas.height) {
-            hojas.splice(i, 1);
-            return;
-          }
-
+          if (hoja.y > canvas.height) hojas.splice(i, 1);
           dibujarHoja(hoja);
         });
-
-        hojasFijas.forEach((hoja) => dibujarHoja(hoja));
+        hojasFijas.forEach(hoja => dibujarHoja(hoja));
       }
-
       frame++;
       requestAnimationFrame(animar);
     }
     animar();
+    
+    /* Animacion de nubes */
+   const nubes = document.querySelectorAll('#nubes img');
+const velocidades = [0.02, 0.08, 0.020, 0.015,0.02, 0.08, 0.020, 0.015]; // velocidad diferente para cada nube (px por frame)
+const posiciones = [];
 
-    const contador = document.getElementById("contador");
-    function actualizarContador() {
-      const inicio = new Date("2024-02-04T00:00:00");
-      const ahora = new Date();
-      const diferencia = ahora - inicio;
-      const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
-      const horas = Math.floor((diferencia / (1000 * 60 * 60)) % 24);
-      const minutos = Math.floor((diferencia / (1000 * 60)) % 60);
-      const segundos = Math.floor((diferencia / 1000) % 60);
-      contador.textContent = `Llevamos juntos ${dias} días, ${horas} horas, ${minutos} minutos, ${segundos} segundos.`;
-    }
-    setInterval(actualizarContador, 1000);
-    actualizarContador();
- 
-    const mensaje = "EL amor crece y se fortalece con LEALTAD, \nestamos donde estamos por todo lo que\nnos hemos cuidado, compartido y \nsuperado juntos 🐻🐥.";
-    const textoDiv = document.getElementById("texto");
-let i = 0;
+nubes.forEach((nube, i) => {
+  posiciones[i] = parseFloat(nube.style.left); // guarda la posición inicial en porcentaje
+});
 
-function escribirTexto() {
-  if (i < mensaje.length) {
-    textoDiv.innerHTML += mensaje.charAt(i);
-    i++;
-    setTimeout(escribirTexto, 80); // velocidad de escritura
-  } else {
-    textoDiv.classList.add("aparecer");
-  }
+function animarNubes() {
+  nubes.forEach((nube, i) => {
+    let pos = posiciones[i];
+    pos += velocidades[i];
+    if (pos > 110) pos = -20; // si la nube sale por derecha, vuelve a entrar por izquierda
+    posiciones[i] = pos;
+    nube.style.left = pos + '%';
+  });
+  requestAnimationFrame(animarNubes);
 }
 
-setTimeout(() => {
-  textoDiv.classList.add("aparecer");
-  escribirTexto();
-}, 1000);
+animarNubes();
+   
+    setInterval(() => {
+  crearEstrellas(canvasEstrellas, 150);
+}, 3000); // se regenera cada 3 segundos
+    
   </script>
 </body>
 </html>

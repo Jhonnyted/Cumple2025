@@ -191,7 +191,7 @@
     @keyframes floatBalloon6 { 0%,100%{transform:translate(0,0);} 50%{transform:translate(-5px,-19px);} }
     @keyframes drawB { to { stroke-dashoffset: 0; } }
     .birthday {
-      text-align: center;
+      text-align: center;     
     }
     .birthday .happy, .birthday .wish {
       font-size: 45px;
@@ -273,6 +273,50 @@
         width: 80%;
        }
      }
+    #game-btn {
+  margin-top: -5px;
+  padding: 12px 18px;
+  background: var(--highlight);
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: "Lilita One", sans-serif;
+  cursor: pointer;
+  color: #000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1s ease;
+  box-shadow: 0 0 10px #ffd700;
+}
+
+.anime-hint {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #e7e8f133;
+  border: 2px solid #fff;
+  border-radius: 12px;
+  padding: 5px 5px;
+  font-size: 25px;
+  text-align: center;
+  font-family: arial;
+  color: #1d1e22;
+  z-index: 100;
+  box-shadow: 0 0 20px #fff;
+  animation: hintIn 0.5s ease-out forwards;
+  text-shadow: 
+    -1px -1px 0 #fff,  
+     1px -1px 0 #fff,
+    -1px  1px 0 #fff,
+     1px  1px 0 #fff;
+}
+
+@keyframes hintIn {
+  from { opacity: 0; transform: translate(-50%, -60%) scale(0.8); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
   </style>
 </head>
 <body>
@@ -319,6 +363,7 @@
           <span class="happy">HAPPY</span>
           <span class="number">33rd</span>
           <span class="wish">BIRTHDAY!</span>
+          <button id="game-btn">¿Quieres jugar un juego?</button>
         </div>
       </div>
       <div class="fireworks" id="fireworks-container"></div>
@@ -391,8 +436,23 @@
 
     dot.addEventListener('animationend', () => dot.remove());
    }
+        // Mostrar el botón después de 10s
+setTimeout(() => {
+  const btn = document.getElementById('game-btn');
+  btn.style.opacity = '1';
+  btn.style.pointerEvents = 'auto';
+}, 10000);
+
+// Evento para mostrar la pista estilo anime
+document.getElementById('game-btn').addEventListener('click', () => {
+  const hintBox = document.createElement('div');
+  hintBox.className = 'anime-hint';
+  hintBox.innerHTML = '<p><strong>Pista:</strong><br>Ve a dónde colocas tus flores.</p>';
+  document.body.appendChild(hintBox);
+});
+
   }); 
  });
   </script>
 </body>
-</html>  
+</html>
